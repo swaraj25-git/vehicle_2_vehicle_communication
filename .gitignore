@@ -1,0 +1,29 @@
+# ROS 2 / colcon
+build/
+install/
+log/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+
+# ROS generated files
+*.db3
+
+# VS Code
+.vscode/
+**/.vscode/
+
+# Python tooling
+.pytest_cache/
+.mypy_cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.swp
+*.tmp
+
