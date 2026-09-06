@@ -11,24 +11,34 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-
     turtlebot3_gazebo_dir = get_package_share_directory(
-        'turtlebot3_gazebo'
-    )
+    'turtlebot3_gazebo'
+)
 
     ros_gz_sim_dir = get_package_share_directory(
         'ros_gz_sim'
     )
+    v2v_launch_dir = get_package_share_directory('v2v_launch')
 
-    # ---------------------------------------------------------
     # Paths
     # ---------------------------------------------------------
 
-    model_path = os.path.join(
-        turtlebot3_gazebo_dir,
+    robot1_model_path = os.path.join(
+    v2v_launch_dir,
+    'models',
+    'robot1.sdf'
+    )
+
+    robot2_model_path = os.path.join(
+        v2v_launch_dir,
         'models',
-        'turtlebot3_burger',
-        'model.sdf'
+        'robot2.sdf'
+    )
+
+    robot3_model_path = os.path.join(
+        v2v_launch_dir,
+        'models',
+        'robot3.sdf'
     )
 
     world_path = os.path.join(
@@ -37,15 +47,25 @@ def generate_launch_description():
         'turtlebot3_world.world'
     )
 
-    bridge_config = os.path.join(
-        turtlebot3_gazebo_dir,
-        'params',
-        'turtlebot3_burger_bridge.yaml'
+    robot1_bridge_config = os.path.join(
+    v2v_launch_dir,
+    'config',
+    'robot1_bridge.yaml'
+)
+
+    robot2_bridge_config = os.path.join(
+        v2v_launch_dir,
+        'config',
+        'robot2_bridge.yaml'
     )
 
-    # ---------------------------------------------------------
-    # Gazebo Harmonic
-    # ---------------------------------------------------------
+    robot3_bridge_config = os.path.join(
+        v2v_launch_dir,
+        'config',
+        'robot3_bridge.yaml'
+    )
+
+    #gazebo
 
     gazebo = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -61,9 +81,9 @@ def generate_launch_description():
         }.items()
     )
 
-    # ---------------------------------------------------------
+
     # Robot 1
-    # ---------------------------------------------------------
+
 
     robot1_spawn = Node(
         package='ros_gz_sim',
@@ -72,7 +92,7 @@ def generate_launch_description():
         name='spawn_robot1',
         arguments=[
             '-name', 'robot1',
-            '-file', model_path,
+            '-file', robot1_model_path,
             '-x', '-2.0',
             '-y', '-0.5',
             '-z', '0.01'
@@ -86,7 +106,7 @@ def generate_launch_description():
         namespace='robot1',
         name='bridge',
         parameters=[
-            {'config_file': bridge_config}
+            {'config_file': robot1_bridge_config}
         ],
         output='screen'
     )
@@ -112,9 +132,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    # ---------------------------------------------------------
-    # Robot 2
-    # ---------------------------------------------------------
+   
 
     robot2_spawn = Node(
         package='ros_gz_sim',
@@ -123,9 +141,9 @@ def generate_launch_description():
         name='spawn_robot2',
         arguments=[
             '-name', 'robot2',
-            '-file', model_path,
-            '-x', '0.0',
-            '-y', '0.0',
+            '-file', robot2_model_path,
+            '-x', '1.5',
+            '-y', '0.5',
             '-z', '0.01'
         ],
         output='screen'
@@ -137,7 +155,7 @@ def generate_launch_description():
         namespace='robot2',
         name='bridge',
         parameters=[
-            {'config_file': bridge_config}
+            {'config_file': robot2_bridge_config}
         ],
         output='screen'
     )
@@ -163,9 +181,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    # ---------------------------------------------------------
-    # Robot 3
-    # ---------------------------------------------------------
+
 
     robot3_spawn = Node(
         package='ros_gz_sim',
@@ -174,7 +190,7 @@ def generate_launch_description():
         name='spawn_robot3',
         arguments=[
             '-name', 'robot3',
-            '-file', model_path,
+            '-file', robot3_model_path,
             '-x', '2.0',
             '-y', '0.5',
             '-z', '0.01'
@@ -188,7 +204,7 @@ def generate_launch_description():
         namespace='robot3',
         name='bridge',
         parameters=[
-            {'config_file': bridge_config}
+            {'config_file': robot3_bridge_config}
         ],
         output='screen'
     )
